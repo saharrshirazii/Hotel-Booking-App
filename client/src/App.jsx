@@ -1,8 +1,27 @@
 import React from 'react'
+import Navbar from './Components/NavBar'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import Home from './Pages/Home'
+import Footer from './Components/Footer'
+import AllRooms from './Pages/AllRooms'
 
 const App = ()=>{
+
+  //we do not show the navbar in owner dashboard.
+  const isOwnerPath = useLocation().pathname.includes('owner');
   return(
-    <div></div>
+    <div>
+      {!isOwnerPath && <Navbar/>}
+        <div className='min-h-[70vh]'>
+          <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/rooms' element={<AllRooms/>}/>
+          </Routes>
+          <Footer/>
+        </div>
+
+      
+    </div>
   )
 }
 
