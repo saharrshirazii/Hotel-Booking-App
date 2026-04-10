@@ -10,7 +10,7 @@ import { HotelReg } from './Components/HotelReg'
 import Layout from './Pages/hotelOwner/Layout'
 import AddRoom from './Pages/hotelOwner/AddRoom'
 import ListRoom from './Pages/hotelOwner/ListRoom'
-import Dashboard from './Pages/hotelOwner/dashboard'
+import Dashboard from './Pages/hotelOwner/Dashboard'
 
 
 const App = () => {
