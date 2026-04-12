@@ -1,12 +1,19 @@
 import express from "express"
 import "dotenv/config"
-import cors from "cors"
-import connectDB from "./configs/db.js";
+import cors from "cors" 
+import connectDB from "./configs/db.js"
+import { clerkMiddleware } from "@clerk/express"
 
-connectDB()
 
-const app = express();
-app.use(cors()) //Enable Cors-Origin Resource Sharing
+connectDB();
+
+const app = express(); //initialize my app.
+app.use(cors()) //Security middleware. It prevents browsers from blocking requests coming from your frontend's URL.
+
+//Middleware
+app.use(express.json()) //It allows my server to read JSON data sent in the body of a request.
+app.use(clerkMiddleware()) //Integrates Clerk authentication. This checks if a user is logged in for every request.
+
 
 app.get ('/' , (req , res) => res.send("API is working"));
 
