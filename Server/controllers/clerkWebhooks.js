@@ -4,7 +4,7 @@ import { Webhook } from "svix"; //get user data
 
 const ClerkWebhooks = async (req, res) => {
     try {
-        //Create a Svix instance wiyh clrek webhook secret.
+        //Create a Svix instance with clrek webhook secret.
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 
         //Getting Headers
@@ -30,32 +30,34 @@ const ClerkWebhooks = async (req, res) => {
         //Switch Case for diffrent events
         switch(type){
             case "user.created":{
-                await User.create(userData);
-                breake;
+                await User.create(userData); //save a new user to MongoDB
+                break;
             }
 
              case "user.updated":{
-                await User.findByIdAndUpdate(data.id , userData);
-                breake;
+                await User.findByIdAndUpdate(data.id , userData); //Updates the existing user
+                break;
             }
 
              case "user.deleted":{
-                await User.findByIdAndDelete(data.id);
-                breake;
+                await User.findByIdAndDelete(data.id); //Removes them from my DB if they delete their account.
+                break;
             }
             default:
             break;
         }
 
-        res.JSON({success: true , message: "Webhook Recived"});
+        res.json({success: true , message: "Webhook Recived"});
 
 
 
 
     } catch (error) {
         console.log(error.message);
-        res.JSON({success: false , message: error.message});
+        res.json({success: false , message: error.message});
     }
 }
 
 export default ClerkWebhooks;
+
+
