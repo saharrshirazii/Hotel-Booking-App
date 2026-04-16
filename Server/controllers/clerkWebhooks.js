@@ -9,10 +9,10 @@ const ClerkWebhooks = async (req, res) => {
 
         //Getting Headers
         const headers = {
-            "svix-id": req.headers["svix-id"],
-            "svix-timestamp": req.headers["svix-timestamp"],
-            "svix-signature": req.headers["svix-signature"]
-        };
+    "svix-id": req.headers["svix-id"],
+    "svix-timestamp": req.headers["svix-timestamp"],
+    "svix-signature": req.headers["svix-signature"] 
+};
 
         //Verifing Headers
         await whook.verify(JSON.stringify(req.body), headers)

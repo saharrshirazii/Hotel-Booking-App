@@ -12,7 +12,8 @@ const app = express(); //initialize my app.
 app.use(cors()) //Security middleware. It prevents browsers from blocking requests coming from your frontend's URL.
 
 //API to listen to webhook
-app.post("/api/clerk", express.raw({ type: 'application/json' }), ClerkWebhooks);
+app.use("/api/clerk" , ClerkWebhooks)
+
 
 //Middleware
 app.use(express.json()) //It allows my server to read JSON data sent in the body of a request.
