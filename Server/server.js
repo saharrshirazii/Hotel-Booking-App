@@ -11,12 +11,14 @@ connectDB();
 const app = express(); //initialize my app.
 app.use(cors()) //Security middleware. It prevents browsers from blocking requests coming from your frontend's URL.
 
+//API to listen to webhook
+app.post("/api/clerk", express.raw({ type: 'application/json' }), ClerkWebhooks);
+
 //Middleware
 app.use(express.json()) //It allows my server to read JSON data sent in the body of a request.
 app.use(clerkMiddleware()) //Integrates Clerk authentication. This checks if a user is logged in for every request.
 
-//API to listen to webhook
-app.use("/api/clerk" , ClerkWebhooks)
+
 
 
 app.get ('/' , (req , res) => res.send("API is working"));
