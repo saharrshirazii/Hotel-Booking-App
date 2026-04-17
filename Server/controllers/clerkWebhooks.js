@@ -1,5 +1,5 @@
+import { json } from "express";
 import User from "../models/User.js";
-
 import { Webhook } from "svix"; //get user data
 
 const ClerkWebhooks = async (req, res) => {
@@ -15,15 +15,17 @@ const ClerkWebhooks = async (req, res) => {
         };
 
         //Verifing Headers
-        await whook.verify(req.rawBody, headers);
+        // await whook.verify(req.rawBody, headers);
+        await whook.verify(json.stringfy(req.body) , headers);
+
         //Getting Data from request body
         const { data, type } = req.body;
 
         const userData = {
             _id: data.id,
-            email: data.email_addresses[0]?.email_address || "test@example.com",
-            username: (data.first_name || "New") + " " + (data.last_name || "User"),
-            image: data.image_url || "",
+            email: data.email_addresses[0]?.email_address,
+            username: data.first_name + " " + data.last_name,
+            image: data.image_url,
         };
 
         //Switch Case for diffrent events
@@ -52,8 +54,8 @@ const ClerkWebhooks = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
+        console.log("Error in Webhook:", error.message);
+        res.status(400).json({ success: false, message: error.message });
     }
 }
 

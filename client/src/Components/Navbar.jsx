@@ -51,7 +51,7 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <Link to={'/'}>
-                    <img src = {assets.logo} width="157" height="40" viewBox="0 0 157 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={`h-9 ${isScrolled && "invert opacity-80"}`}/>
+                    <img src = {assets.logo}  height="50px" viewBox="0 0 0 50" fill="none" xmlns="http://www.w3.org/2000/svg" className={`h-9 ${isScrolled && "invert opacity-80"}`}/>
                 </Link>
 
                 {/* Desktop Nav */}
