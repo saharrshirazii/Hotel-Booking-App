@@ -25,7 +25,8 @@ app.use(express.json()); //It allows my server to read JSON data sent in the bod
 //     }
 // }), ClerkWebhooks);
 
-app.post("/api/clerk", express.raw({ type: 'application/json' }), ClerkWebhooks);
+app.use("/api/clerk", ClerkWebhooks);
+
 
 app.get ('/' , (req , res) => res.send("API is working"));
 
