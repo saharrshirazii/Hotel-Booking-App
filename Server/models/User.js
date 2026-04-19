@@ -7,7 +7,11 @@ const userSchema = mongoose.Schema({
     email: {type: String , required: true},
     image: {type: String , required: true},
     role: {type: String, enum: ["user" , "hotelOwner"], default: "user"},
-    recentSearchedCities: [{type: String, required: true}], //An array of strings to track user history.
+    // recentSearchedCities: [{type: String, required: true}], //An array of strings to track user history.
+    recentSearchedCities: {
+    type: [String], 
+    default: [] // This allows the user to be created without cities
+},
 } , {timestamps: true} //This automatically adds createdAt and updatedAt fields to every user.
 );
 
