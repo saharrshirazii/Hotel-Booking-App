@@ -3,7 +3,7 @@ import "dotenv/config"
 import cors from "cors" 
 import connectDB from "./configs/db.js"
 import { clerkMiddleware } from "@clerk/express"
-import ClerkWebhooks from "./controllers/clerkWebhooks.js"
+import clerkWebhooks from "./controllers/clerkWebhooks.js"
 
 
 connectDB();
@@ -25,7 +25,7 @@ app.use(clerkMiddleware()); //Integrates Clerk authentication. This checks if a 
 //     }
 // }), ClerkWebhooks);
 
-app.use("/api/clerk", ClerkWebhooks);
+app.use("/api/clerk", clerkWebhooks);
 
 
 app.get ('/' , (req , res) => res.send("API is working"));
