@@ -14,6 +14,8 @@ const clerkWebhooks = async (req, res) => {
             "svix-signature": req.headers["svix-signature"]
         };
 
+        console.log("Headers:", headers);
+
         //Verifing Headers
         // await whook.verify(req.rawBody, headers);
 await whook.verify(req.rawBody, headers);
@@ -24,16 +26,21 @@ await whook.verify(req.rawBody, headers);
         const userData = {
             _id: data.id,
             email: data.email_addresses[0].email_address,
-            username: data.first_name + " " + data.last_name,
+            username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
             image: data.image_url,
         };
 
         //Switch Case for diffrent events
         switch (type) {
-            case "user.created": {
-                await User.create(userData); //save a new user to MongoDB
-                break;
-            }
+           case "user.created": {
+    await User.findByIdAndUpdate(
+        data.id,
+        userData,
+        { upsert: true, new: true }
+    );
+    console.log("User upserted");
+    break;
+}
 
             case "user.updated": {
                 await User.findByIdAndUpdate(data.id, userData); //Updates the existing user
