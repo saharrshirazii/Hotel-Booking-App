@@ -12,6 +12,15 @@ const app = express(); //initialize my app.
 app.use(cors()) //Security middleware. It prevents browsers from blocking requests coming from your frontend's URL.
 
 
+app.post(
+  "/api/clerk",
+  express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString();
+    },
+  }),
+  clerkWebhooks
+);
 
 //Middleware
 app.use(express.json()); //It allows my server to read JSON data sent in the body of a request.
@@ -25,7 +34,8 @@ app.use(clerkMiddleware()); //Integrates Clerk authentication. This checks if a 
 //     }
 // }), ClerkWebhooks);
 
-app.use("/api/clerk", clerkWebhooks);
+
+
 
 
 app.get ('/' , (req , res) => res.send("API is working"));
