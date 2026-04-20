@@ -22,6 +22,8 @@ await whook.verify(req.rawBody, headers);
 
         //Getting Data from request body
         const { data, type } = req.body;
+        console.log("TYPE:", type);
+
 
         const userData = {
             _id: data.id,
@@ -29,6 +31,7 @@ await whook.verify(req.rawBody, headers);
             username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
             image: data.image_url,
         };
+        console.log("USER DATA:", userData);
 
         //Switch Case for diffrent events
         switch (type) {
