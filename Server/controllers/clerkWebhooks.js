@@ -50,7 +50,7 @@ const userData = {
     await User.findByIdAndUpdate(
         data.id,
         userData,
-        { upsert: true, new: true }
+  { upsert: true, returnDocument: "after" }
     );
     console.log("User upserted");
     break;
