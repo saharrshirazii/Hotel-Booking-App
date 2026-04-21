@@ -1,8 +1,11 @@
-import { json } from "express";
 import User from "../models/User.js";
 import { Webhook } from "svix"; //get user data
 
+
 const clerkWebhooks = async (req, res) => {
+        console.log("🔥 WEBHOOK HIT");
+
+    res.set("Cache-Control", "no-store");
     try {
         //Create a Svix instance with clrek webhook secret.
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);

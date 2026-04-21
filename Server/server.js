@@ -13,7 +13,7 @@ app.use(cors()) //Security middleware. It prevents browsers from blocking reques
 
 
 app.post(
-  "/api/clerk",
+  "/api/clerk/",
   express.json({
     verify: (req, res, buf) => {
       req.rawBody = buf.toString();
@@ -24,7 +24,7 @@ app.post(
 
 //Middleware
 app.use(express.json()); //It allows my server to read JSON data sent in the body of a request.
-app.use(clerkMiddleware()); //Integrates Clerk authentication. This checks if a user is logged in for every request.
+// app.use(clerkMiddleware()); //Integrates Clerk authentication. This checks if a user is logged in for every request.
 
 
 //API to listen to webhook
