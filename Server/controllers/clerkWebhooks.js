@@ -34,7 +34,10 @@ await whook.verify(req.rawBody, headers);
 
 const userData = {
   _id: data.id,
-  email: primaryEmail?.email_address || "no-email",
+  email:
+    data.email_addresses?.[0]?.email_address ||
+    data.primary_email_address?.email_address ||
+    "no-email",
   username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
   image: data.image_url,
 };
