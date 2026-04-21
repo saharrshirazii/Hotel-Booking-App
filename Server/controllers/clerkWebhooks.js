@@ -3,9 +3,7 @@ import { Webhook } from "svix"; //get user data
 
 
 const clerkWebhooks = async (req, res) => {
-        console.log("🔥 WEBHOOK HIT");
-
-    res.set("Cache-Control", "no-store");
+    // res.set("Cache-Control", "no-store");
     try {
         //Create a Svix instance with clrek webhook secret.
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
@@ -20,8 +18,7 @@ const clerkWebhooks = async (req, res) => {
         console.log("Headers:", headers);
 
         //Verifing Headers
-        // await whook.verify(req.rawBody, headers);
-await whook.verify(req.rawBody, headers);
+        await whook.verify(req.rawBody, headers);
 
         //Getting Data from request body
         const { data, type } = req.body;
@@ -29,32 +26,32 @@ await whook.verify(req.rawBody, headers);
 
 
         const primaryEmail = data.email_addresses?.find(
-  (e) => e.id === data.primary_email_address_id
-);
+            (e) => e.id === data.primary_email_address_id
+        );
 
-const userData = {
-  _id: data.id,
-  email:
-    data.email_addresses?.[0]?.email_address ||
-    data.primary_email_address?.email_address ||
-    "no-email",
-  username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
-  image: data.image_url,
-};
+        const userData = {
+            _id: data.id,
+            email:
+                data.email_addresses?.[0]?.email_address ||
+                data.primary_email_address?.email_address ||
+                "no-email",
+            username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+            image: data.image_url,
+        };
         console.log("USER DATA:", userData);
         console.log("FULL DATA:", JSON.stringify(data, null, 2));
 
         //Switch Case for diffrent events
         switch (type) {
-           case "user.created": {
-    await User.findByIdAndUpdate(
-        data.id,
-        userData,
-  { upsert: true, returnDocument: "after" }
-    );
-    console.log("User upserted");
-    break;
-}
+            case "user.created": {
+                await User.findByIdAndUpdate(
+                    data.id,
+                    userData,
+                    { upsert: true, returnDocument: "after" }
+                );
+                console.log("User upserted");
+                break;
+            }
 
             case "user.updated": {
                 await User.findByIdAndUpdate(data.id, userData); //Updates the existing user
