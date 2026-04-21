@@ -30,11 +30,12 @@ await whook.verify(req.rawBody, headers);
 
         const userData = {
             _id: data.id,
-            email: data.email_addresses[0].email_address,
+            email: data.email_addresses[0],
             username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
             image: data.image_url,
         };
         console.log("USER DATA:", userData);
+        console.log("FULL DATA:", JSON.stringify(data, null, 2));
 
         //Switch Case for diffrent events
         switch (type) {
