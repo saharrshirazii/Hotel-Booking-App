@@ -28,12 +28,16 @@ await whook.verify(req.rawBody, headers);
         console.log("TYPE:", type);
 
 
-        const userData = {
-            _id: data.id,
-            email: data.email_addresses[0],
-            username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
-            image: data.image_url,
-        };
+        const primaryEmail = data.email_addresses?.find(
+  (e) => e.id === data.primary_email_address_id
+);
+
+const userData = {
+  _id: data.id,
+  email: primaryEmail?.email_address || "no-email",
+  username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+  image: data.image_url,
+};
         console.log("USER DATA:", userData);
         console.log("FULL DATA:", JSON.stringify(data, null, 2));
 
