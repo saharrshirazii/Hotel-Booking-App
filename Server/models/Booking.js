@@ -1,6 +1,6 @@
-import moongose from "mongoose";
+import mongoose from "mongoose";
 
-const bookingSchema = new moongose.Schema({
+const bookingSchema = new mongoose.Schema({
     user: { type: String, ref: "User", required: true },
     room: { type: String, ref: "Room", required: true },
     hotel: { type: String, ref: "Hotel", required: true },
@@ -10,7 +10,7 @@ const bookingSchema = new moongose.Schema({
     status: {
         type: String,
         enum: ["pending", "confirmed", "canceled"],
-        default: "pending"
+        default: "pending",
     },
     paymentMethod: {
         type: String,
