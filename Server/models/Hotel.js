@@ -1,0 +1,15 @@
+import moongose from "mongoose";
+
+const hotelSchema = new moongose.Schema({
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    contact: { type: String, required: true },
+    owner: { type: String, required: true, ref: "User" },
+    city: { type: String, required: true }
+
+}, { timestamps: true });
+
+//creating model using the above schema
+const Hotel = mongoose.model("Hotel", hotelSchema);
+
+export default Hotel;

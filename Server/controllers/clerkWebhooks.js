@@ -6,7 +6,7 @@ const clerkWebhooks = async (req, res) => {
     // res.set("Cache-Control", "no-store");
     try {
         //Create a Svix instance with clrek webhook secret.
-        const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+        const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);//to create new webhook
 
         //Getting Headers
         const headers = {
@@ -22,34 +22,27 @@ const clerkWebhooks = async (req, res) => {
 
         //Getting Data from request body
         const { data, type } = req.body;
-        console.log("TYPE:", type);
+        // console.log("TYPE:", type);
 
 
-        const primaryEmail = data.email_addresses?.find(
-            (e) => e.id === data.primary_email_address_id
-        );
+        // const primaryEmail = data.email_addresses?.find(
+        //     (e) => e.id === data.primary_email_address_id
+        // );
 
         const userData = {
             _id: data.id,
             email:
-                data.email_addresses?.[0]?.email_address ||
-                data.primary_email_address?.email_address ||
-                "no-email",
-            username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+                data.email_addresses[0].email_address ,
+            username: data.first_name + " " + data.last_name,
             image: data.image_url,
         };
-        console.log("USER DATA:", userData);
-        console.log("FULL DATA:", JSON.stringify(data, null, 2));
+        // console.log("USER DATA:", userData);
+        // console.log("FULL DATA:", JSON.stringify(data, null, 2));
 
         //Switch Case for diffrent events
         switch (type) {
             case "user.created": {
-                await User.findByIdAndUpdate(
-                    data.id,
-                    userData,
-                    { upsert: true, returnDocument: "after" }
-                );
-                console.log("User upserted");
+                await User.create(userData,);
                 break;
             }
 
