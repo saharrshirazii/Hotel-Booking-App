@@ -15,7 +15,11 @@ connectDB();
 connectCloudinary();
 
 const app = express(); //initialize my app.
-app.use(cors()) //Security middleware. It prevents browsers from blocking requests coming from your frontend's URL.
+app.use(cors({
+  origin: true,
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+})); // Security middleware. Allows cross-origin requests with Authorization headers.
 
 
 app.post(

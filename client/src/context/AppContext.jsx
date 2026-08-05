@@ -23,10 +23,10 @@ export const AppProvider = ({ children }) => {
 
     const fetchUser = async () => { //fetch the user details from the backend API
         try {
-            const token = await axios.get();
+            const token = await getToken();
             const { data } = await axios.get("/api/user", {
                 headers: {
-                    Authorization: `Bearer ${await getToken()}`, //use the auth token in the request header
+                    Authorization: `Bearer ${token}`, //use the auth token in the request header
 
                 },
             });

@@ -19,7 +19,7 @@ export const registerHotel = async (req , res) => {
         res.json({success: true , message: "Hotel Registered Successfuly."});
 
     }catch(error){
-        res.json({success: true , message: error.message});
+        res.json({success: false , message: error.message});
 
     }
 }
