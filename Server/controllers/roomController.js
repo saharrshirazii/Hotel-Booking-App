@@ -7,15 +7,15 @@ import { v2 as cloudinary } from "cloudinary";
 //API to create a new room for hotel
 export const createRoom = async (req, res) => {
     try {
-        const { roomType, pricePerNight, aminiteis } = req.body; //extract data from request body
-        const hotel = await Hotel.findOne({ owner: req.auth.userId }) //find a hotel useing this owner property
+        const { roomType, PricePerNight, amenities } = req.body; //extract data from request body
+        const hotel = await Hotel.findOne({ owner: req.user._id }) //find a hotel useing this owner property
 
         if (!hotel) {
             return res.json({ success: false, message: "No Hotel Found." })
         }
 
         //upload images to cludinary
-        const uploadImages = req.file.map(async (file) => {
+        const uploadImages = req.files.map(async (file) => {
             const response = await cloudinary.uploader.upload(file.path);
             return response.secure_url;
         })
@@ -26,7 +26,7 @@ export const createRoom = async (req, res) => {
         await Room.create({
             hotel: hotel._id,
             roomType,
-            pricePerNight: +pricePerNight, //we will get price in string and + will convert it in the number.
+            pricePerNight: +PricePerNight, //we will get price in string and + will convert it in the number.
             amenities: JSON.parse(amenities),
             images,
         })
@@ -61,7 +61,7 @@ export const getRooms = async (req, res) => {
 //API to get all rooms for a specific hotel
 export const getOwnerRoooms = async (req, res) => {
     try {
-        const hotelData = await Hotel({ owner: req.auth.userId })
+        const hotelData = await Hotel.findOne({ owner: req.user._id });
         const rooms = await Room
             .find({ hotel: hotelData._id.toString() })
             .populate("hotel");
