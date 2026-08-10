@@ -1,9 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Title from '../../Components/Title'
 import { assets, dashboardDummyData } from '../../assets/assets'
+import { useAppContext } from '../../context/AppContext'
 
 const Dashboard = () => {
-    const [dashboardData, setDashboardData] = useState(dashboardDummyData)
+    // const [dashboardData, setDashboardData] = useState(dashboardDummyData)
+    const [dashboardData, setDashboardData] = useState({
+        bookings: [],
+        totalBookings: 0,
+        totalRevenue: 0,
+    });
+
+    const {axios , getToken , user, currency , toast} = useAppContext(); //get the axios instance and getToken function from the context to make API calls with authentication
+
+    //Fetch Dashboard Data  
+    const fetchDashboardData = async () => {
+        try {
+            const { data } = await axios.get('/api/bookings/dashboard', { headers: { Authorization: `Bearer ${await getToken()}` } }); //send a GET request to the backend API to fetch the dashboard data of the hotel owner with auth token in the header
+            if(data.success){
+                setDashboardData(data.dashboardData); //save the fetched dashboard data in the state
+            }else{
+                toast.error(data.message); //show error message if the API call fails
+            }
+        } catch (error) {
+            toast.error(error.message); //show error message if the API call fails
+        }
+    }
+
+    useEffect(() => {
+        if(user){
+            fetchDashboardData(); //fetch the dashboard data when the component mounts and when the user state changes (i.e. when the user logs in or out)
+        }
+    }, [user]);
+
     return (
         <div>
             <Title align='left' font='outfit' title='Dashboard' subTitle='Monitor your room listings, track bookings and analyze revenue-all in one place. Stay updated with real-time
@@ -24,7 +53,7 @@ const Dashboard = () => {
                     <img src={assets.totalRevenueIcon} alt='' className='max-sm:hidden h-10' />
                     <div className='flex flex-col sm:ml-4 font-medium'>
                         <p className='text-blue-500 text-lg'>Total Revenues</p>
-                        <p className='text-neutral-400 text-base'>$ {dashboardData.totalRevenue}</p>
+                        <p className='text-neutral-400 text-base'>{currency} {dashboardData.totalRevenue}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +81,7 @@ const Dashboard = () => {
                                     {item.room.roomType}
                                 </td>
                                  <td className='py-3 px-4 text-gray-700 bordet-t border-gray-300 text-center'>
-                                    $ {item.totalPrice}
+                                    {currency} {item.totalPrice}
                                 </td>
                                 <td className='py-3 px-4 bordet-t border-gray-300 flex'> 
                                     <button className={`py-1 px-3 text-xs rounded-full max-auto 

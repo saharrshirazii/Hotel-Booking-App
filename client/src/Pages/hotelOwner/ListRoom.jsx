@@ -5,7 +5,7 @@ import { useAppContext } from '../../context/AppContext';
 
 const ListRoom = () => {
     const [rooms, setRooms] = useState([]); //state to save the list of rooms fetched from the backend API;
-    const { axios, getToken, user } = useAppContext(); //get the axios instance and getToken function from the context to make API calls with authentication
+    const { axios, getToken, user , currency } = useAppContext(); //get the axios instance and getToken function from the context to make API calls with authentication
 
     //Fetch Rooms of the Hotel Owner
     const fetchRooms = async () => {
@@ -37,6 +37,8 @@ const ListRoom = () => {
             toast.error(error.message); //show error message if the API call fails
         }
     }
+
+
     useEffect(() => {
         if (user) {
             fetchRooms(); //fetch the rooms when the component mounts and when the user state changes (i.e. when the user logs in or out)
@@ -71,7 +73,7 @@ const ListRoom = () => {
                                     {item.amenities.join(' , ')}
                                 </td>
                                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
-                                    {item.pricePerNight}
+                                    {item.pricePerNight} {currency}
                                 </td>
                                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300 text-sm text-red-500 text-center'>
                                     <label className='relative inline-flex items-center cursor-pointer text-gray-900 gap-3'>
